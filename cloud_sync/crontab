@@ -1,1 +1,1 @@
-*/1 * * * * /usr/bin/env python /app/cloud_sync/cloud_sync.py
+* *   * * *   root  bash -c "cd /app ; pipenv run python cloud_sync/cloud_sync.py >>/app/cron.logs 2>&1"
