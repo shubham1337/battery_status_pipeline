@@ -1,39 +1,42 @@
 #!/usr/bin/env python3
+
 import rospy
-from std_msgs.msg import String
 from sensor_msgs.msg import BatteryState
-import sqlite3
+from common.db_schema import BatteryStatusLog
 import datetime as dt
 
+SQLITE_DB_PATH = os.getenv('SQLITE_DB_PATH')
 
-def callback(data):
-    rospy.loginfo(rospy.get_caller_id() + "I heard %s", data)
-    
-    conn = sqlite3.connect('example.db')
-    c = conn.cursor()
-    c.execute(f"INSERT INTO battery_status_log VALUES ('{dt.datetime.now()}', '{data.current}', '{data.voltage}', '{data.power_supply_status}')")
-    conn.commit()
-    conn.close()
+class ROSSubscriberBase():
 
-def listener():
+    def __init__(self, name, topic, msg_type):
+        self.name = name
+        self.topic = topic
+        self.msg_type = msg_type
 
-    conn = sqlite3.connect('example.db')
-    c = conn.cursor()
-    c.execute('''CREATE TABLE IF NOT EXISTS battery_status_log (date timestamp, current real, voltage real, power_supply_mode int)''')
-    conn.commit()
-    conn.close()
+    def run(self):
+        rospy.init_node(self.name, anonymous=True)
+        rospy.Subscriber(self.topic, self.msg_type, self.callback)
+        rospy.spin()
 
-    # In ROS, nodes are uniquely named. If two nodes with the same
-    # name are launched, the previous one is kicked off. The
-    # anonymous=True flag means that rospy will choose a unique
-    # name for our 'listener' node so that multiple listeners can
-    # run simultaneously.
-    rospy.init_node('battery_state_subscriber', anonymous=True)
+    def callback(self, data):
+        raise Exception('Not Implemented.')
 
-    rospy.Subscriber("fake_battery_state", BatteryState, callback)
 
-    # spin() simply keeps python from exiting until this node is stopped
-    rospy.spin()
+class BatteryStateSubscriber(ROSSubscriberBase):
+
+    def __init__(self):
+        self.local_db = BatteryStatusLog(SQLITE_DB_PATH)
+        super().__init__('battery_state_subscriber', 'fake_battery_state', BatteryState)
+
+    def callback(self, data):
+        rospy.loginfo(rospy.get_caller_id() + "I heard %s", data)
+        self.local_db.insert({
+            'timestamp': dt.datetime.now(),
+            'current': data.current,
+            'voltage': data.voltage,
+            'power_supply_status': data.power_supply_status,
+        })
 
 if __name__ == '__main__':
-    listener()
+    BatteryStateSubscriber().run()

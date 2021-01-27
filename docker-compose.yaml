@@ -1,4 +1,5 @@
 version: '3'
+
 services:
 
   # ROS Services
@@ -41,10 +42,10 @@ services:
   #  networks:
   #    - cloud_net
   #  environment:
-  #    - CLOUD_DATABASE_URL=http://roscore:11311
+  #    - CLOUD_DB_PATH=
+  #    - SQLITE_DB_PATH=/app/battery_status_db.sqlite
   #  volumes:
   #    - common_db:/app/battery_status_db.sqlite
-  #  command: pipenv run
 
 
   # Cloud services
