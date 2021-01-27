@@ -31,39 +31,40 @@ services:
       - ROS_MASTER_URI=http://roscore:11311
       - ROS_PYTHON_VERSION=3
       - PYTHON_UNBUFFERED=1
+      - SQLITE_DB_PATH=sqlite:////app/temp/battery_status.db?check_same_thread=False
     volumes:
-      - common_db:/app/battery_status_db.sqlite
+      - common_db:/app/temp/
     command: bash -c "source /opt/ros/melodic/setup.bash ; source /app/devel/setup.bash ; rosrun battery_status_package subscriber.py"
 
-  #cloud_sync:
-  #  build: 
-  #    context: ./
-  #    dockerfile: ./cloud_sync/Dockerfile
-  #  networks:
-  #    - cloud_net
-  #  environment:
-  #    - CLOUD_DB_PATH=
-  #    - SQLITE_DB_PATH=/app/battery_status_db.sqlite
-  #  volumes:
-  #    - common_db:/app/battery_status_db.sqlite
+  cloud_sync:
+    build: 
+      context: ./
+      dockerfile: ./cloud_sync/Dockerfile
+    networks:
+      - cloud_net
+    environment:
+      - CLOUD_DB_PATH=postgres://postgres:postgres@cloud_db/postgres
+      - SQLITE_DB_PATH=sqlite:////app/temp/battery_status.db?check_same_thread=False
+    volumes:
+      - common_db:/app/temp/
 
 
   # Cloud services
-  #cloud_db:
-  #  image: postgres
-  #  networks:
-  #    - cloud_net
-  #  environment:
-  #    - POSTGRES_USER=postgres
-  #    - POSTGRES_PASS=postgres
+  cloud_db:
+    image: postgres
+    networks:
+      - cloud_net
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=postgres
 
-  #grafana:
-  #  image: grafana
-  #  networks:
-  #    - cloud_net
-  #  environment:
-  #    - POSTGRES_USER=postgres
-  #    - POSTGRES_PASS=postgres
+  grafana:
+    image: grafana/grafana
+    ports:
+      - 3000:3000
+    networks:
+      - cloud_net
 
 networks:
   cloud_net:

@@ -9,6 +9,7 @@ verify_ssl = true
 pyyaml = "*"
 rospkg = "*"
 sqlalchemy = "*"
+psycopg2 = "*"
 
 [requires]
 python_version = "3.7"

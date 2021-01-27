@@ -1,5 +1,4 @@
 
-import os
 from sqlalchemy import create_engine, MetaData, Table, Column, Integer, Float, DateTime
 
 

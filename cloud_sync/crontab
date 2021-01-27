@@ -1,1 +1,1 @@
-*/5 * * * * /usr/bin/env python /app/cloud_sync/cloud_sync.py
+*/1 * * * * /usr/bin/env python /app/cloud_sync/cloud_sync.py

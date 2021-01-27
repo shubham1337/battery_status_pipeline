@@ -1,7 +1,7 @@
 
 from common.db_schema import BatteryStatusLog
 import os
-import datatime as dt
+import datetime as dt
 
 SQLITE_DB_PATH = os.getenv('SQLITE_DB_PATH')
 CLOUD_DB_PATH = os.getenv('CLOUD_DB_PATH')

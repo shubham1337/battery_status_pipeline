@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import os
 import rospy
 from sensor_msgs.msg import BatteryState
 from common.db_schema import BatteryStatusLog

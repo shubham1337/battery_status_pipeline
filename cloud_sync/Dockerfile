@@ -8,7 +8,7 @@ WORKDIR /app
 RUN apt-get update && \
   apt-get install -y cron && \
   pip install pipenv && \
-  pipenv install --system
+  pipenv install --system --deploy
 
 # Setup cron for scheduled running of the task
 RUN cp cloud_sync/crontab /etc/cron.d/crontab && \
@@ -17,4 +17,4 @@ RUN cp cloud_sync/crontab /etc/cron.d/crontab && \
 
 ENV PYTHONPATH=/app
 
-ENTRYPOINT ["cron", "-f"] 
+#ENTRYPOINT ["cron", "-f"] 

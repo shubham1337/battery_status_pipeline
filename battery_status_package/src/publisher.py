@@ -2,7 +2,7 @@
 
 import rospy
 from sensor_msgs.msg import BatteryState
-from .fake_battery import FakeBattery
+from common.fake_battery import FakeBattery
 
 class ROSPublisherBase():
 
@@ -10,12 +10,13 @@ class ROSPublisherBase():
         self.name = name
         self.topic = topic
         self.msg_type = msg_type
-        self.rate = rospy.Rate(rate) # hz
+        self.rate_float = rate
 
     def run(self):
         try:
             self.pub = rospy.Publisher(self.topic, self.msg_type, queue_size=10)
             rospy.init_node(self.name, anonymous=True)
+            self.rate = rospy.Rate(self.rate_float) # hz
             self.publish_loop()
         except rospy.ROSInterruptException:
             pass
@@ -27,7 +28,7 @@ class ROSPublisherBase():
 class BatteryStatePublisher(ROSPublisherBase):
 
     def __init__(self):
-        self.fake_battery = FakeBattery(capacity=1, rate=0.5)
+        self.fake_battery = FakeBattery(capacity=24, rate=0.5)
         super().__init__('battery_state_publisher', 'fake_battery_state', BatteryState, 0.5)
 
     def publish_loop(self):
