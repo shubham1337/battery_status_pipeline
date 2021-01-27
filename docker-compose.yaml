@@ -1,0 +1,64 @@
+version: '3'
+services:
+
+  # ROS Services
+  roscore:
+    image: ros:melodic
+    networks:
+      - ros_net
+    command: roscore
+
+  battery_state_publisher:
+    build: ./battery_status_pipeline
+    networks:
+      - ros_net
+    environment:
+      - ROS_MASTER_URI=http://roscore:11311
+      - ROS_PYTHON_VERSION=3
+    command: rosrun battery_status_package publisher.py
+
+  battery_state_subscriber:
+    build: ./battery_status_pipeline
+    networks:
+      - ros_net
+    environment:
+      - ROS_MASTER_URI=http://roscore:11311
+      - ROS_PYTHON_VERSION=3
+    volumes:
+      - common_db:/app/battery_status_db.sqlite
+    command: rosrun battery_status_package subscriber.py
+
+  #cloud_sync:
+  #  image: python:3.7
+  #  networks:
+  #    - cloud_net
+  #  environment:
+  #    - CLOUD_DATABASE_URL=http://roscore:11311
+  #  volumes:
+  #    - common_db:/app/battery_status_db.sqlite
+  #  command: pipenv run
+
+
+  # Cloud services
+  #cloud_db:
+  #  image: postgres
+  #  networks:
+  #    - cloud_net
+  #  environment:
+  #    - POSTGRES_USER=postgres
+  #    - POSTGRES_PASS=postgres
+
+  #grafana:
+  #  image: grafana
+  #  networks:
+  #    - cloud_net
+  #  environment:
+  #    - POSTGRES_USER=postgres
+  #    - POSTGRES_PASS=postgres
+
+network:
+  cloud_net:
+  ros_net:
+
+volumes:
+  common_db:
