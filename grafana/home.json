@@ -15,7 +15,6 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "id": 1,
   "links": [],
   "panels": [
     {
@@ -269,7 +268,7 @@
             "query": {
               "params": [
                 "B",
-                "1h",
+                "4h",
                 "now"
               ]
             },
@@ -281,10 +280,10 @@
           }
         ],
         "executionErrorState": "alerting",
-        "for": "1h",
+        "for": "5m",
         "frequency": "1m",
         "handler": 1,
-        "message": "Current Spiked >4A more than 10 times in the last 1h.",
+        "message": "Current Spiked >4A more than 10 times in the last 4h.",
         "name": "Current Spikes Exceeded Limit",
         "noDataState": "no_data",
         "notifications": []
@@ -367,7 +366,7 @@
           "hide": true,
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  $__time(timestamp),\n  current\nFROM\n  battery_status_log\nWHERE\n  $__timeFilter(timestamp) AND current <= -3\n",
+          "rawSql": "SELECT\n  $__time(timestamp),\n  current\nFROM\n  battery_status_log\nWHERE\n  $__timeFilter(timestamp) AND current <= -4\n",
           "refId": "B",
           "select": [
             [
@@ -449,12 +448,12 @@
     "list": []
   },
   "time": {
-    "from": "now-5m",
+    "from": "now-1h",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
   "title": "Battery Management System",
   "uid": "ZDTnp7YGk",
-  "version": 2
+  "version": 1
 }

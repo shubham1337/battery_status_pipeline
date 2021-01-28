@@ -1,0 +1,12 @@
+notifiers:
+  - name: "Email Notification Channel"
+    type: email
+    uid: email
+    is_default: true
+    send_reminder: false
+    disable_resolve_message: false
+    settings:
+      singleEmail: true
+      addresses: |-
+        bms.alert1337@gmail.com;
+        shubh133@gmail.com
