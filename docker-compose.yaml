@@ -61,6 +61,8 @@ services:
 
   grafana:
     build: ./grafana/
+    depends_on:
+      - cloud_db
     ports:
       - 3000:3000
     networks:
