@@ -1,37 +1,53 @@
 #!/usr/bin/env python3
 
 import os
+import datetime as dt
 import rospy
+from rospy import Subscribers
 from sensor_msgs.msg import BatteryState
 from common.db_schema import BatteryStatusLog
-import datetime as dt
 
-SQLITE_DB_PATH = os.getenv('SQLITE_DB_PATH')
+# For type hinting
+from typing import Any
 
-class ROSSubscriberBase():
+# Initialize Environment variables
+SQLITE_DB_PATH: str = os.getenv('SQLITE_DB_PATH')
 
-    def __init__(self, name, topic, msg_type):
-        self.name = name
-        self.topic = topic
-        self.msg_type = msg_type
 
-    def run(self):
+class ROSSubscriberBase:
+    ''' Generic base class which can be inherited for creating ROS Subscribers '''
+
+    def __init__(self, name: str, topic: str, msg_type: Any) -> None:
+        self.name: str = name
+        self.topic: str = topic
+        self.msg_type: Any = msg_type
+
+    def run(self) -> None:
         rospy.init_node(self.name, anonymous=True)
-        rospy.Subscriber(self.topic, self.msg_type, self.callback)
+        Subscriber(self.topic, self.msg_type, self.callback)
         rospy.spin()
 
-    def callback(self, data):
+    def callback(self, data: Any) -> None:
+        ''' Must be implemented by child classes '''
         raise Exception('Not Implemented.')
 
 
 class BatteryStateSubscriber(ROSSubscriberBase):
+    ''' Generic base class which can be inherited for creating ROS Subscribers '''
 
-    def __init__(self):
-        self.local_db = BatteryStatusLog(SQLITE_DB_PATH)
+    def __init__(self) -> None:
+        self.local_db: BatteryStatusLog = BatteryStatusLog(SQLITE_DB_PATH)
         super().__init__('battery_state_subscriber', 'fake_battery_state', BatteryState)
 
-    def callback(self, data):
-        rospy.loginfo(rospy.get_caller_id() + "I heard %s", data)
+    def callback(self, data: Any) -> None:
+        ''' 
+            Callback is called everytime there is a new message for the topic 'fake_battery_state'
+        '''
+
+        # Log received data for debugging
+        rospy.loginfo(data)
+
+        # Insert Battery State information to a local database
         self.local_db.insert({
             'timestamp': dt.datetime.now(),
             'current': data.current,

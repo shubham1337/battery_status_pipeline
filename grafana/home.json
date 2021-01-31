@@ -15,6 +15,7 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
+  "id": null,
   "links": [],
   "panels": [
     {
@@ -366,7 +367,7 @@
           "hide": true,
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  $__time(timestamp),\n  current\nFROM\n  battery_status_log\nWHERE\n  $__timeFilter(timestamp) AND current <= -4\n",
+          "rawSql": "SELECT\n  $__time(timestamp),\n  current as number_of_spikes\nFROM\n  battery_status_log\nWHERE\n  $__timeFilter(timestamp) AND current <= -4\n",
           "refId": "B",
           "select": [
             [
