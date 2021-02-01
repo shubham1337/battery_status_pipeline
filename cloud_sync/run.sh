@@ -2,6 +2,7 @@
 
 # Setup cron for scheduled running of the task
 cat /dev/null > /etc/cron.d/crontab
+# To pass runtime env vars to cron task
 env >> /etc/cron.d/crontab
 cat /app/cloud_sync/crontab >> /etc/cron.d/crontab
 chmod 0644 /etc/cron.d/crontab

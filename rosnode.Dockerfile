@@ -5,6 +5,7 @@ COPY . /app
 WORKDIR /app
 
 ENV PYTHONPATH=/app
+ENV ROS_PYTHON_VERSION=3
 
 # Install Dependencies and Build ROS Package
 RUN apt-get update && \

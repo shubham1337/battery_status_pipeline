@@ -1,0 +1,13 @@
+# Compose file for running tests
+version: '3'
+
+services:
+  run_tests:
+    build:
+      context: ./
+      dockerfile: ./rosnode.Dockerfile
+    command: |
+      bash -c ". /opt/ros/melodic/setup.sh &&
+      . /app/devel/setup.sh &&
+      catkin_make run_tests && 
+      python3 -m unittest tests/*.py"

@@ -281,10 +281,10 @@
           }
         ],
         "executionErrorState": "alerting",
-        "for": "4h",
-        "frequency": "1m",
+        "for": "",
+        "frequency": "1h",
         "handler": 1,
-        "message": "Current Spiked >4A more than 10 times in the last 4h.",
+        "message": "Current Spiked more than 10 times in the last 4h.",
         "name": "Current Spikes Exceeded Limit",
         "noDataState": "no_data",
         "notifications": []

@@ -202,8 +202,13 @@ include_directories(
 # endif()
 
 ## Add folders to be run by python nosetests
-# catkin_add_nosetests(test)
+#catkin_add_nosetests(tests/unit_tests.py)
 
 catkin_install_python(PROGRAMS src/subscriber.py src/publisher.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
+
+if(CATKIN_ENABLE_TESTING)
+  find_package(rostest REQUIRED)
+  add_rostest(tests/rostest_file.test)
+endif()

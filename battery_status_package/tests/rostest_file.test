@@ -1,0 +1,31 @@
+<!-- Test if the publisher.py is publishing at the correct frequency. -->
+<launch>
+  <node name="test_battery_status_package" pkg="battery_status_package" type="publisher.py" />
+
+  <param name="hztest1/topic" value="fake_battery_state" />
+  <param name="hztest1/hz" value="0.5" />
+  <param name="hztest1/hzerror" value="0.5" />
+  <param name="hztest1/test_duration" value="5.0" />
+  <test test-name="hztest_test" pkg="rostest" type="hztest" name="hztest1" />
+
+
+  <!-- Test if the publisher.py is publishing properly. -->
+  <node name="publisher_0"
+        pkg="battery_status_package" type="publisher.py">
+        <rosparam>
+          msg_name: sensor_msgs/Battery_State
+        </rosparam>
+        <remap from="fake_battery_state" to="~output" />
+  </node>
+
+  <test name="publishtest"
+        test-name="publishtest"
+        pkg="rostest" type="publishtest">
+    <rosparam>
+      topics:
+        - name: fake_battery_state
+          timeout: 10
+          negative: False
+    </rosparam>
+  </test>
+</launch>

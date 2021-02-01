@@ -1,5 +1,6 @@
 FROM grafana/grafana
 
+# Build arg for decrypting grafana.ini file which contains some secrets
 ARG PGP_PASSPHRASE
 
 # Create config dirs

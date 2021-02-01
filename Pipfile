@@ -8,6 +8,8 @@ pyyaml = "*"
 rospkg = "*"
 sqlalchemy = "*"
 psycopg2-binary = "*"
+defusedxml = "*"
+netifaces = "*"
 
 [dev-packages]
 

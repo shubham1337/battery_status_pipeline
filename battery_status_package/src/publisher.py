@@ -40,7 +40,7 @@ class BatteryStatePublisher(ROSPublisherBase):
     '''
 
     def __init__(self) -> None:
-        self.fake_battery: FakeBattery = FakeBattery(capacity=1, rate=0.5)
+        self.fake_battery: FakeBattery = FakeBattery(capacity=24, rate=0.5)
         super().__init__('battery_state_publisher', 'fake_battery_state', BatteryState, 0.5)
 
     def publish_loop(self) -> None:

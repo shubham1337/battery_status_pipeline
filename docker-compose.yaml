@@ -18,9 +18,11 @@ services:
       - ros_net
     environment:
       - ROS_MASTER_URI=http://roscore:11311
-      - ROS_PYTHON_VERSION=3
-      - PYTHON_UNBUFFERED=1
-    command: bash -c "source /opt/ros/melodic/setup.bash ; source /app/devel/setup.bash ; rosrun battery_status_package publisher.py"
+    command: |
+      bash -c "
+        source /opt/ros/melodic/setup.bash ; 
+        source /app/devel/setup.bash ; 
+        rosrun battery_status_package publisher.py"
 
   battery_state_subscriber:
     build:
@@ -30,12 +32,14 @@ services:
       - ros_net
     environment:
       - ROS_MASTER_URI=http://roscore:11311
-      - ROS_PYTHON_VERSION=3
-      - PYTHON_UNBUFFERED=1
       - SQLITE_DB_PATH=sqlite:////app/temp/battery_status.db?check_same_thread=False
     volumes:
       - common_db:/app/temp/
-    command: bash -c "source /opt/ros/melodic/setup.bash ; source /app/devel/setup.bash ; rosrun battery_status_package subscriber.py"
+    command: |
+      bash -c "
+        source /opt/ros/melodic/setup.bash ; 
+        source /app/devel/setup.bash ; 
+        rosrun battery_status_package subscriber.py"
 
   cloud_sync:
     build: 

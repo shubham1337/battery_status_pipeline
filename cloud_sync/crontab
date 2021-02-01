@@ -1,1 +1,1 @@
-* *   * * *   root  bash -c "cd /app ; pipenv run python cloud_sync/cloud_sync.py >>/app/cron.logs 2>&1"
+0 */1   * * *   root  bash -c "cd /app ; pipenv run python cloud_sync/cloud_sync.py >>/app/cron.logs 2>&1"
