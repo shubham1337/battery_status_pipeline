@@ -12,6 +12,8 @@ class SATableBase:
     ''' Base class which can be inherited for building SQL based tables using SQLAlchemy '''
 
     def __init__(self, db_path: str) -> None:
+        if not (type(db_path) is str and len(db_path) > 0):
+            raise Exception('Invalid db_path')
         self.meta: MetaData = MetaData()
         self.engine: Engine = create_engine(db_path, echo=True)
         self.table: Table = self.table_schema()
