@@ -13,8 +13,6 @@ services:
       dockerfile: ./rosnode.Dockerfile
     environment:
       - ROS_MASTER_URI=http://roscore:11311
-      - ROS_PYTHON_VERSION=3
-      - PYTHON_UNBUFFERED=1
     command: bash -c "source /opt/ros/melodic/setup.bash ; source /app/devel/setup.bash ; rosrun battery_status_package publisher.py"
 
   battery_state_subscriber:
@@ -23,8 +21,6 @@ services:
       dockerfile: ./rosnode.Dockerfile
     environment:
       - ROS_MASTER_URI=http://roscore:11311
-      - ROS_PYTHON_VERSION=3
-      - PYTHON_UNBUFFERED=1
       - SQLITE_DB_PATH=sqlite:////app/temp/battery_status.db?check_same_thread=False
     volumes:
       - common_db:/app/temp/
@@ -35,6 +31,7 @@ services:
       context: ./
       dockerfile: ./cloud_sync/Dockerfile
     environment:
+      - CLOUD_DB_PATH=<MUST_BE_SET>
       - SQLITE_DB_PATH=sqlite:////app/temp/battery_status.db?check_same_thread=False
     volumes:
       - common_db:/app/temp/
