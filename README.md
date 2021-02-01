@@ -35,9 +35,10 @@ docker-compose -f docker-compose.test.yaml up
 ### Monitoring & Alerting (Grafana)
 _dir: grafana/_
 
-Grafana is quite a standard Monitoring and Alerting solution, hence it was chosen to be used here for
-Monitoring the Battery management system. The datasource for Grafana is the cloud database (Postgres)
-The BMS dashboard in Grafana looks like the following:
+Grafana is quite a standard Monitoring and Alerting solution, hence it was chosen to be used here. 
+The datasource used in Grafana is the cloud database (Postgres)
+
+BMS dashboard in Grafana looks like the following:
 ![BMS Dashboard](https://github.com/shubham1337/battery_status_pipeline/raw/master/screenshots/dash.png "BMS Dashboard")
 In the above screenshot you can see the Fake battery going through the cycles of NotCharging -> Charging -> FullyCharged -> Discharging and then back to NotCharging again.
 Please note, The battery capacity and data sync time was reduced to 1 V and per minute respectively to showcase the monitoring capabilities in the above screenshot, The project on submission will have the values which were specified in the assignment, which were 24 V for battery capacity and hourly cloud data sync.
