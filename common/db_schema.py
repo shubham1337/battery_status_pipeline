@@ -13,7 +13,7 @@ class SATableBase:
 
     def __init__(self, db_path: str) -> None:
         self.meta: MetaData = MetaData()
-        self.engine: Engine = create_engine(db_path, echo: bool = True)
+        self.engine: Engine = create_engine(db_path, echo=True)
         self.table: Table = self.table_schema()
         self.create_table()
         self.connection: Connection = self.engine.connect()

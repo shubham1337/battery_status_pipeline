@@ -3,7 +3,7 @@
 import os
 import datetime as dt
 import rospy
-from rospy import Subscribers
+from rospy import Subscriber
 from sensor_msgs.msg import BatteryState
 from common.db_schema import BatteryStatusLog
 
@@ -24,7 +24,7 @@ class ROSSubscriberBase:
 
     def run(self) -> None:
         rospy.init_node(self.name, anonymous=True)
-        Subscriber(self.topic, self.msg_type, self.callback)
+        self.sub: Subscriber = Subscriber(self.topic, self.msg_type, self.callback)
         rospy.spin()
 
     def callback(self, data: Any) -> None:

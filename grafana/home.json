@@ -281,7 +281,7 @@
           }
         ],
         "executionErrorState": "alerting",
-        "for": "5m",
+        "for": "4h",
         "frequency": "1m",
         "handler": 1,
         "message": "Current Spiked >4A more than 10 times in the last 4h.",

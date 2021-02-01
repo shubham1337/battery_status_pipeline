@@ -1,21 +1,16 @@
-# Quick compose file to deploy all services on the same host
+# Separate compose file to deploy only ROS Node and Cloud sync services
 version: '3'
 
 services:
 
-  # ROS Services
   roscore:
     image: ros:melodic
-    networks:
-      - ros_net
     command: roscore
 
   battery_state_publisher:
     build:
       context: ./
       dockerfile: ./rosnode.Dockerfile
-    networks:
-      - ros_net
     environment:
       - ROS_MASTER_URI=http://roscore:11311
       - ROS_PYTHON_VERSION=3
@@ -26,8 +21,6 @@ services:
     build:
       context: ./
       dockerfile: ./rosnode.Dockerfile
-    networks:
-      - ros_net
     environment:
       - ROS_MASTER_URI=http://roscore:11311
       - ROS_PYTHON_VERSION=3
@@ -41,37 +34,10 @@ services:
     build: 
       context: ./
       dockerfile: ./cloud_sync/Dockerfile
-    networks:
-      - cloud_net
     environment:
-      - CLOUD_DB_PATH=postgres://postgres:postgres@cloud_db/postgres
       - SQLITE_DB_PATH=sqlite:////app/temp/battery_status.db?check_same_thread=False
     volumes:
       - common_db:/app/temp/
-
-
-  # Cloud services
-  cloud_db:
-    image: postgres
-    networks:
-      - cloud_net
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=postgres
-
-  grafana:
-    build: ./grafana/
-    depends_on:
-      - cloud_db
-    ports:
-      - 3000:3000
-    networks:
-      - cloud_net
-
-networks:
-  cloud_net:
-  ros_net:
 
 volumes:
   common_db:
